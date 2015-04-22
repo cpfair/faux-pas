@@ -10,28 +10,9 @@
 <meta content='width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no' name='viewport'>
 <title>Pebble App Store</title>
 <link href="https://apps.getpebble.com/assets/application-9848294b9ef3813313c8cc3fe69b201c.css" media="all" rel="stylesheet" />
+<script type="text/javascript" src="store_patch.js"></script>
+<link rel="stylesheet" type="text/css" href="store_patch.css">
 <script>
-window.confirm = function(){}; // Problem solved. - this is representative of the quality of code you'll find in the rest of this thing.
-var old_createElement = document.createElement;
-document.createElement = function(element_name) {
-	var el = old_createElement.call(document, element_name);
-	if (element_name == "IFRAME") {
-		var old_setAttribute = el.setAttribute;
-		el.setAttribute = function(attr, val) {
-			if (attr == "src" && val.indexOf("pebble-method-call-js-frame://") >= 0) {
-				var method = val.match(/method=([^&]+)/)[1];
-				var args = decodeURIComponent(val.match(/args=([^&]+)/)[1]);
-				if (method == "openURL") {
-					url = JSON.parse(args).data.url;
-					window.open(url);
-				}
-				return;
-			}
-			old_setAttribute.call(el, attr, val);
-		}
-	}
-	return el;
-}
 //<![CDATA[
 window.gon = {};gon.global={"api_host":"https://api1.getpebble.com/api","algolia_search_app_id":"BUJATNZD81","algolia_search_only_key":"8dbb11cdde0f4f9d7bf787e83ac955ed","algolia_search_index":"pebble-appstore-production","keen_project_id":"52e205f405cd6662b9000000","keen_write_key":"10c51e6eca83f6b4f99cd0a1bb832aaaadb8d7fb03c16dd046c65bc53a8da969ba734e8ed1aa95ce02a84c14fde8ac91c70c908208e6a1bf1852cfeb30554d10715889ae3c6ac696a86a816ad0a2acaad0d0f08f70623d12dd2aaa73b9534ac06f0a09af18a5ea26012698a6866f0560","do_not_block":false,"pebble_app_url":"itms://itunes.com/app/pebblesmartwatch"};
 //]]>

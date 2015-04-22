@@ -1,6 +1,7 @@
 body {
 	margin: 0;
 	padding: 0;
+	width: 100%;
 }
 
 iframe {
@@ -60,6 +61,13 @@ iframe {
 	padding: 5px;
 }
 
+.fullscreen .iphone-header {
+	left:0;
+	right:0;
+	top:0;
+	width: auto;
+}
+
 .header-area {
 	display: inline-block;
 }
@@ -92,6 +100,17 @@ iframe {
 	left:5px;
 	top:6px;
 	cursor:pointer;
+}
+
+.header-link a {
+	position: absolute;
+	left: 5px;
+	top: 6px;
+	color: white;
+}
+
+.header-link {
+	display: none;
 }
 
 .header-search {
