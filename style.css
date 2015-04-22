@@ -9,8 +9,8 @@ iframe {
 	border: 0;
 	width: 320px;
 	height: 524px;
-	left:29px;
-	top:161px;
+	left: 29px;
+	top: 161px;
 }
 
 .fullscreen iframe {
@@ -25,46 +25,46 @@ iframe {
 
 .footer {
 	position: absolute;
-	right:0;
-	left:0;
-	margin-top:-40px;
+	right: 0;
+	left: 0;
+	margin-top: -40px;
 	text-align: center;
 	font-family:Arial;
 }
 
 .iphone-frame {
 	position: relative;
-	background-image:url('img/iPhone5.png');
-	width:376px;
-	height:792px;
+	background-image: url('img/iPhone5.png');
+	width: 376px;
+	height: 792px;
 	margin: 50px auto 50px auto;
 }
 
 .fullscreen .iphone-frame {
 	background-image: none;
-	width:100%;
-	height:auto;
+	width: 100%;
+	height: auto;
 }
 
 .iphone-header {
-	position:absolute;
+	position: absolute;
 	height: 34px;
-	background-color:#ff4700;
+	background-color: #ff4700;
 	color: white;
 	font-family: Arial;
-	width:310px;
-	left:29px;
-	top:117px;
+	width: 310px;
+	left: 29px;
+	top: 117px;
 	text-align: center;
-	font-size:20px;
+	font-size: 20px;
 	line-height: 30px;
 	padding: 5px;
 }
 
 .fullscreen .iphone-header {
-	left:0;
-	right:0;
-	top:0;
+	left: 0;
+	right: 0;
+	top: 0;
 	width: auto;
 }
 
@@ -74,8 +74,8 @@ iframe {
 
 .header-area .apps, .header-area .faces {
 	display: inline-block;
-	border-radius:5px;
-	border:1px solid white;
+	border-radius: 5px;
+	border: 1px solid white;
 	padding: 0 5px;
 	cursor: pointer;
 }
@@ -97,20 +97,20 @@ iframe {
 
 .header-back {
 	position: absolute;
-	left:5px;
-	top:6px;
-	cursor:pointer;
-}
-
-.header-link a {
-	position: absolute;
 	left: 5px;
 	top: 6px;
-	color: white;
+	cursor:pointer;
 }
 
 .header-link {
 	display: none;
+	position: absolute;
+	left: 5px;
+	top: 6px;
+}
+
+.header-link a {
+	color: white;
 }
 
 .header-search {
