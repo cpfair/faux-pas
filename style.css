@@ -123,3 +123,7 @@ iframe {
 .search-icon {
 	vertical-align: middle;
 }
+
+.footer a {
+	color: #555;
+}
