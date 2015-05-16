@@ -3,33 +3,49 @@ $(function(){
     if (!frame) {
         frame = $("frame", parent.document).get(1);
     }
-
-    frame.contentWindow.addEventListener("hashchange", function(){
-        var location = frame.contentWindow.location
-        var in_watchfaces = location.hash.indexOf("watchfaces") >= 0;
+	var current_app_id;
+    frame.contentWindow.location_change_cb = function(location){
+        var in_watchfaces = location.indexOf("watchfaces") >= 0;
         $(".header-area .apps").toggleClass("active", !in_watchfaces);
         $(".header-area .faces").toggleClass("active", in_watchfaces);
 
-        var app_id = location.hash.match(/[a-f0-9]{24}/);
-        $(".header-link").toggle(!!app_id);
-        if (app_id) {
-            $(".header-link a").attr("href", "https://apps.getpebble.com/applications/" + app_id)
-        }
-    }, false);
+        current_app_id = location.match(/[a-f0-9]{24}/);
+		$(".header-link .link").toggle(!!current_app_id);
+		if (current_app_id) {
+			$(".header-link .link").attr("href", "https://apps.getpebble.com/applications/" + current_app_id)
+		}
+        update_pbw_link();
+    };
+
+	var update_pbw_link = function() {
+		if (frame.contentWindow.app_meta_cache[current_app_id]) {
+			var meta = frame.contentWindow.app_meta_cache[current_app_id];
+			$(".header-link .pbw").toggle(true);
+			$(".header-link .pbw").attr("href", meta.latest_release.pbw_file);
+		} else {
+			$(".header-link .pbw").toggle(false);
+		}
+	}
+
+	frame.contentWindow.app_meta_cache_update_cb = function() {
+		update_pbw_link();
+	}
+
+    var frame_nav = function(){ frame.contentWindow.set_location.apply(this, arguments) };
 
     $(".header-back").click(function(){
         frame.contentWindow.history.go(-1);
     });
 
     $(".header-search").click(function(){
-        frame.contentWindow.location.hash = "/search/watchapps";
+        frame_nav("search/watchapps/1");
     });
 
     $(".header-area .apps").click(function(){
-        frame.contentWindow.location.hash = "/";
+        frame_nav("watchapps");
     });
 
     $(".header-area .faces").click(function(){
-        frame.contentWindow.location.hash = "/watchfaces";
+        frame_nav("watchfaces");
     });
 });

@@ -103,14 +103,15 @@ iframe {
 }
 
 .header-link {
-	display: none;
 	position: absolute;
 	left: 5px;
 	top: 6px;
+	font-size: 80%;
 }
 
 .header-link a {
 	color: white;
+	display: none;
 }
 
 .header-search {
