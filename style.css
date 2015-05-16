@@ -102,14 +102,15 @@ iframe {
 	cursor:pointer;
 }
 
-.header-link a {
+.header-link {
 	position: absolute;
 	left: 5px;
 	top: 6px;
-	color: white;
+	font-size: 80%;
 }
 
-.header-link {
+.header-link a {
+	color: white;
 	display: none;
 }
 

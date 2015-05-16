@@ -19,3 +19,29 @@ document.createElement = function(element_name) {
 	}
 	return el;
 }
+
+// Export this so the navbar frame can see it.
+window.app_meta_cache = {};
+
+var old_xhr = XMLHttpRequest;
+
+XMLHttpRequest = function() {
+	var xhr = new old_xhr();
+	xhr.addEventListener("readystatechange", function(e){
+		if (xhr.status == 200) {
+			try {
+				var res = JSON.parse(xhr.responseText);
+				if (res.applications) {
+					for (var i = res.applications.length - 1; i >= 0; i--) {
+						window.app_meta_cache[res.applications[i].id] = res.applications[i];
+					};
+					// The navbar frame pastes a callback into this variable.
+					if (window.app_meta_cache_update_cb) window.app_meta_cache_update_cb();
+				}
+			} catch(err) {
+				// oops!
+			}
+		}
+	});
+	return xhr;
+}
