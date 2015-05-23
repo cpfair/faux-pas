@@ -1,23 +1,25 @@
-window.confirm = function(){}; // Problem solved. - this is representative of the quality of code you'll find in the rest of this thing.
+// This is how the PAS web UI communicates with the outside world
+// ...by creating iframes
+// we only care about the openURL method, and can safely black-hole everything else
 var old_createElement = document.createElement;
 document.createElement = function(element_name) {
-	var el = old_createElement.call(document, element_name);
-	if (element_name == "IFRAME") {
-		var old_setAttribute = el.setAttribute;
-		el.setAttribute = function(attr, val) {
-			if (attr == "src" && val.indexOf("pebble-method-call-js-frame://") >= 0) {
-				var method = val.match(/method=([^&]+)/)[1];
-				var args = decodeURIComponent(val.match(/args=([^&]+)/)[1]);
-				if (method == "openURL") {
-					url = JSON.parse(args).data.url;
-					window.open(url);
-				}
-				return;
-			}
-			old_setAttribute.call(el, attr, val);
-		}
-	}
-	return el;
+    var el = old_createElement.call(document, element_name);
+    if (element_name == "iframe") {
+        var old_setAttribute = el.setAttribute;
+        el.setAttribute = function(attr, val) {
+            if (attr == "src" && val.indexOf("pebble-method-call-js-frame://") >= 0) {
+                var method = val.match(/method=([^&]+)/)[1];
+                var args = decodeURIComponent(val.match(/args=([^&]+)/)[1]);
+                if (method == "openURL") {
+                    url = JSON.parse(args).data.url;
+                    window.open(url);
+                }
+                return;
+            }
+            old_setAttribute.call(el, attr, val);
+        }
+    }
+    return el;
 }
 
 // Export this so the navbar frame can see it.
@@ -31,9 +33,10 @@ XMLHttpRequest = function() {
 		if (xhr.status == 200) {
 			try {
 				var res = JSON.parse(xhr.responseText);
-				if (res.applications) {
-					for (var i = res.applications.length - 1; i >= 0; i--) {
-						window.app_meta_cache[res.applications[i].id] = res.applications[i];
+				if (res.data) {
+					for (var i = res.data.length - 1; i >= 0; i--) {
+                        if (!res.data[i].latest_release) continue
+						window.app_meta_cache[res.data[i].id] = res.data[i];
 					};
 					// The navbar frame pastes a callback into this variable.
 					if (window.app_meta_cache_update_cb) window.app_meta_cache_update_cb();
@@ -44,4 +47,21 @@ XMLHttpRequest = function() {
 		}
 	});
 	return xhr;
-}
+};
+
+document.addEventListener("DOMContentLoaded", function(){
+    var injector = angular.element(document.body).injector();
+    var location = injector.get("$location");
+    var rootScope = injector.get("$rootScope");
+
+    rootScope.$on('$locationChangeStart', function(e, next, curr){
+        if (window.location_change_cb) window.location_change_cb(next);
+    });
+
+    window.set_location = function(loc){
+        location.path(loc);
+    }
+});
+
+
+
