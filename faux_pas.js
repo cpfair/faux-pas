@@ -52,8 +52,8 @@ $(function(){
         update_nav_bar();
 	}
 
-    var frame_nav = function(){
-        frame.window.set_location.apply(this, arguments)
+    var frame_nav = function(path){
+        frame.window.location.pathname = "/en_US/" + path;
     };
 
     var goto_search = function() {

@@ -59,11 +59,4 @@ document.addEventListener("DOMContentLoaded", function(){
     rootScope.$on('$locationChangeStart', function(e, next, curr){
         if (nav_frame) nav_frame.frame_location_change_cb(next);
     });
-
-    window.set_location = function(loc){
-        location.path(loc);
-    }
 });
-
-
-
