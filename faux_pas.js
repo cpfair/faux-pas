@@ -33,8 +33,6 @@ $(function(){
             basalt: 12,
             chalk: 18
         }
-        frame.contentWindow.location.hash = "#" + frame.contentWindow.location.pathname.split('/en_US')[1];
-        frame.contentWindow.location.pathname = frame.contentWindow.location.pathname.split('/en_US')[0] + '/en_US/';
         frame.contentWindow.location.search = '?platform=pas&hardware=' + platform + '&pebble_color=' + platform_colours[platform];
     };
 
