@@ -1,6 +1,8 @@
 // This is how the PAS web UI communicates with the outside world
 // ...by creating iframes
 // we only care about the openURL method, and can safely black-hole everything else
+var nav_frame = window.parent.frames[0];
+
 var old_createElement = document.createElement;
 document.createElement = function(element_name) {
     var el = old_createElement.call(document, element_name);
@@ -38,8 +40,7 @@ XMLHttpRequest = function() {
                         if (!res.data[i].latest_release) continue
 						window.app_meta_cache[res.data[i].id] = res.data[i];
 					};
-					// The navbar frame pastes a callback into this variable.
-					if (window.app_meta_cache_update_cb) window.app_meta_cache_update_cb();
+					if (nav_frame) nav_frame.frame_app_meta_cache_update_cb();
 				}
 			} catch(err) {
 				// oops!
@@ -54,8 +55,9 @@ document.addEventListener("DOMContentLoaded", function(){
     var location = injector.get("$location");
     var rootScope = injector.get("$rootScope");
 
+    if (nav_frame) nav_frame.frame_load_cb();
     rootScope.$on('$locationChangeStart', function(e, next, curr){
-        if (window.location_change_cb) window.location_change_cb(next);
+        if (nav_frame) nav_frame.frame_location_change_cb(next);
     });
 
     window.set_location = function(loc){

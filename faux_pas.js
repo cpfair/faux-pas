@@ -3,8 +3,14 @@ $(function(){
     if (!frame) {
         frame = parent.window.frames[1];
     }
+
+    window.frame_load_cb = function(){
+        window.frame_location_change_cb(frame.window.location.pathname);
+    }
+
 	var current_app_id;
-    frame.window.location_change_cb = function(location){
+    window.frame_location_change_cb = function(location){
+        console.log("PAS navigated to", location);
         var in_watchfaces = location.indexOf("watchfaces") >= 0;
         $(".header-area .apps").toggleClass("active", !in_watchfaces);
         $(".header-area .faces").toggleClass("active", in_watchfaces);
@@ -36,15 +42,13 @@ $(function(){
         frame.window.location.search = '?platform=pas&hardware=' + platform + '&pebble_color=' + platform_colours[platform];
     };
 
-	frame.window.app_meta_cache_update_cb = function() {
+	window.frame_app_meta_cache_update_cb = function() {
 		update_pbw_link();
 	}
 
-    var frame_nav = function(){ frame.window.set_location.apply(this, arguments) };
-
-    $(".header-back").click(function(){
-        frame.window.history.go(-1);
-    });
+    var frame_nav = function(){
+        frame.window.set_location.apply(this, arguments)
+    };
 
     $(".header-search").click(function(){
         frame_nav("search/watchapps/1");
