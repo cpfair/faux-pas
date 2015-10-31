@@ -1,0 +1,5 @@
+@media only screen and (min-width: 720px) {
+    .is-browser {
+        background-color: white !important;
+    }
+}
