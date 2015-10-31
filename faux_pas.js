@@ -11,12 +11,13 @@ $(function(){
 	var current_app_id;
     window.frame_location_change_cb = function(location){
         console.log("PAS navigated to", location);
-        var in_watchfaces = location.indexOf("watchfaces") >= 0;
-        $(".header-area .apps").toggleClass("active", !in_watchfaces);
-        $(".header-area .faces").toggleClass("active", in_watchfaces);
 
         current_app_id = location.match(/[a-f0-9]{24}/);
+        var in_watchfaces = (location.indexOf("watchfaces") >= 0) || (!!current_app_id && frame.window.app_meta_cache[current_app_id].type == "watchapp");
+        $(".header-area .apps").toggleClass("active", !in_watchfaces);
+        $(".header-area .faces").toggleClass("active", in_watchfaces);
 		$(".header-link .link").toggle(!!current_app_id);
+
 		if (current_app_id) {
 			$(".header-link .link").attr("href", "https://apps.getpebble.com/applications/" + current_app_id)
 		}
