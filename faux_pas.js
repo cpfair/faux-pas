@@ -4,26 +4,26 @@ $(function(){
         frame = parent.window.frames[1];
     }
 
-    window.frame_load_cb = function(){
-        window.frame_location_change_cb(frame.window.location.pathname);
-    }
-
 	var current_app_id, current_app_type;
-    window.frame_location_change_cb = function(location){
-        console.log("PAS navigated to", location);
-
+    var update_nav_bar = function(location){
+        location = location || frame.window.location.pathname;
         current_app_id = location.match(/[a-f0-9]{24}/);
-        var in_watchfaces = (location.indexOf("watchfaces") >= 0) || (!!current_app_id && frame.window.app_meta_cache[current_app_id].type == "watchapp");
-        $(".header-area .apps").toggleClass("active", !in_watchfaces);
-        $(".header-area .faces").toggleClass("active", in_watchfaces);
-		$(".header-link .link").toggle(!!current_app_id);
-        current_app_type = in_watchfaces ? "watchfaces" : "watchapps";
+        if (!!current_app_id && !!frame.window.app_meta_cache && !!frame.window.app_meta_cache[current_app_id]) {
+            current_app_type = frame.window.app_meta_cache[current_app_id].type + "s";
+        } else {
+            current_app_type = location.indexOf("watchfaces") >= 0 ? "watchfaces" : "watchapps";
+        }
 
-		if (current_app_id) {
-			$(".header-link .link").attr("href", "https://apps.getpebble.com/applications/" + current_app_id)
-		}
+        $(".header-area .apps").toggleClass("active", current_app_type == "watchapps");
+        $(".header-area .faces").toggleClass("active", current_app_type == "watchfaces");
+        $(".header-link .link").toggle(!!current_app_id);
+
+        if (current_app_id) {
+            $(".header-link .link").attr("href", "https://apps.getpebble.com/applications/" + current_app_id)
+        }
+
         update_pbw_link();
-    };
+    }
 
 	var update_pbw_link = function() {
 		if (frame.window.app_meta_cache[current_app_id]) {
@@ -44,8 +44,12 @@ $(function(){
         frame.window.location.search = '?platform=pas&hardware=' + platform + '&pebble_color=' + platform_colours[platform];
     };
 
+    // If I ever need to differentiate these, I'm prepared!
+    window.frame_load_cb = update_nav_bar;
+    window.frame_location_change_cb = update_nav_bar;
+
 	window.frame_app_meta_cache_update_cb = function() {
-		update_pbw_link();
+        update_nav_bar();
 	}
 
     var frame_nav = function(){
