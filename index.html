@@ -1,36 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-        <script type="text/javascript" src="faux_pas.js"></script>
-        <link rel="stylesheet" type="text/css" href="style.css">
-        <title>Pebble App Store</title>
-    </head>
-    <body>
-        <div class="iphone-frame">
-            <div class="iphone-header">
-                <div class="header-link">
-                    <a href="#" target="_blank" class="link">Link</a>
-                    <a href="#" target="_blank" class="pbw">PBW</a>
-                </div>
-                <div class="header-area">
-                    <div class="apps active">Apps</div><div class="faces">Faces</div>
-                </div>
-                <div class="header-search">
-                    <img src="img/search.png" class="search-icon"/> &raquo;
-                </div>
-            </div>
-            <iframe src="en_US/?platform=pas"></iframe>
-        </div>
-        <div class="footer"><a href="fullscreen.html">Fullscreen</a></div>
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-            ga('create', 'UA-49035672-1', 'cpfx.ca');
-            ga('send', 'pageview');
-        </script>
-    </body>
+    <frameset rows="44px,*" frameborder="0" border="0" framespacing="0">
+        <frame src="fullscreen_nav.html" name="nav_frame">
+        <frame src="en_US/?platform=pas&amp;pebble_color=12" name="store_frame">
+    </frameset>
 </html>

@@ -27,6 +27,17 @@ $(function(){
 		}
 	}
 
+    var set_platform = function(platform){
+        var platform_colours = {
+            aplite: 1,
+            basalt: 12,
+            chalk: 18
+        }
+        frame.contentWindow.location.hash = "#" + frame.contentWindow.location.pathname.split('/en_US')[1];
+        frame.contentWindow.location.pathname = frame.contentWindow.location.pathname.split('/en_US')[0] + '/en_US/';
+        frame.contentWindow.location.search = '?platform=pas&hardware=' + platform + '&pebble_color=' + platform_colours[platform];
+    };
+
 	frame.contentWindow.app_meta_cache_update_cb = function() {
 		update_pbw_link();
 	}
@@ -47,5 +58,13 @@ $(function(){
 
     $(".header-area .faces").click(function(){
         frame_nav("watchfaces");
+    });
+
+    $(".platform").click(function(){
+        $(".platform").removeClass("active");
+        $(this).addClass("active");
+        var classes = [].slice.call(this.classList);
+        var this_platform = classes[(classes.indexOf("platform") + 1) % classes.length]; // The class that isn't "platform"
+        set_platform(this_platform);
     });
 });
