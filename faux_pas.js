@@ -8,7 +8,7 @@ $(function(){
         window.frame_location_change_cb(frame.window.location.pathname);
     }
 
-	var current_app_id;
+	var current_app_id, current_app_type;
     window.frame_location_change_cb = function(location){
         console.log("PAS navigated to", location);
 
@@ -17,6 +17,7 @@ $(function(){
         $(".header-area .apps").toggleClass("active", !in_watchfaces);
         $(".header-area .faces").toggleClass("active", in_watchfaces);
 		$(".header-link .link").toggle(!!current_app_id);
+        current_app_type = in_watchfaces ? "watchfaces" : "watchapps";
 
 		if (current_app_id) {
 			$(".header-link .link").attr("href", "https://apps.getpebble.com/applications/" + current_app_id)
@@ -51,16 +52,34 @@ $(function(){
         frame.window.set_location.apply(this, arguments)
     };
 
+    var goto_search = function() {
+        frame_nav("search/" + current_app_type + "/1");
+    }
+
+    var goto_type_home = function() {
+        frame_nav(current_app_type);
+    }
+
     $(".header-search").click(function(){
-        frame_nav("search/watchapps/1");
+        goto_search();
     });
 
     $(".header-area .apps").click(function(){
-        frame_nav("watchapps");
+        current_app_type = "watchapps";
+        if (frame.window.location.pathname.indexOf("search") >= 0) {
+            goto_search();
+        } else {
+            goto_type_home();
+        }
     });
 
     $(".header-area .faces").click(function(){
-        frame_nav("watchfaces");
+        current_app_type = "watchfaces";
+        if (frame.window.location.pathname.indexOf("search") >= 0) {
+            goto_search();
+        } else {
+            goto_type_home();
+        }
     });
 
     $(".platform").click(function(){
